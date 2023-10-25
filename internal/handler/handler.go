@@ -21,7 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		user.POST("/", h.AddPerson)
 		user.DELETE("/", h.DeletePerson)
 		user.GET("/", h.CheckPerson)
-		user.PATCH("/part", h.EditPerson)
+		user.PATCH("/", h.EditPerson)
 	}
 
 	return router
