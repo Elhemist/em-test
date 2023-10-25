@@ -1,7 +1,10 @@
 package main
 
 import (
+	emtest "em-test"
+	"em-test/internal/handler"
 	"em-test/internal/repository"
+	"em-test/internal/service"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -12,7 +15,7 @@ func main() {
 	if err := InitConfig(); err != nil {
 		logrus.Fatalf("Config init error: %s", err.Error())
 	}
-	_, err := repository.NewPostgresDB(repository.Config{
+	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Usename:  viper.GetString("db.usename"),
@@ -22,6 +25,15 @@ func main() {
 	})
 	if err != nil {
 		logrus.Fatalf("DB init fail: %s", err.Error())
+	}
+
+	repos := repository.NewRepository(db)
+	service := service.NewService(repos)
+	handlers := handler.NewHandler(service)
+
+	srv := new(emtest.Server)
+	if err := srv.Start(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+		logrus.Fatalf("Running error: %s", err.Error())
 	}
 }
 
