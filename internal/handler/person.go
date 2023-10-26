@@ -1,8 +1,31 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type personInput struct {
+	Name       string `json:"name"`
+	Surname    string `json:"surname"`
+	Patronymic string `json:"patronymic,omitempty"`
+}
 
 func (h *Handler) AddPerson(c *gin.Context) {
+	var input personInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	fmt.Println(1)
+	fmt.Println(input.Name, input.Surname, input.Patronymic)
+	err := h.services.Person.AddPerson()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
 }
 func (h *Handler) CheckPerson(c *gin.Context) {
