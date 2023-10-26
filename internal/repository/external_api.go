@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -35,10 +37,13 @@ type genderResp struct {
 }
 
 func GetAge(name string) (int, error) {
+
+	logrus.Debug("External api Age request started")
 	req, err := http.Get(fmt.Sprintf("%s?name=%s", ageUrl, name))
 	if err != nil {
 		return 0, err
 	}
+	logrus.Debug("External api Age request recived")
 
 	defer req.Body.Close()
 
@@ -58,10 +63,12 @@ func GetAge(name string) (int, error) {
 }
 
 func GetNation(name string) (string, error) {
+	logrus.Debug("External api Nation request started")
 	req, err := http.Get(fmt.Sprintf("%s?name=%s", nationUrl, name))
 	if err != nil {
 		return "", err
 	}
+	logrus.Debug("External api Nation request recived")
 
 	defer req.Body.Close()
 
@@ -81,10 +88,12 @@ func GetNation(name string) (string, error) {
 }
 
 func GetGender(name string) (string, error) {
+	logrus.Debug("External api Gender request started")
 	req, err := http.Get(fmt.Sprintf("%s?name=%s", genderUrl, name))
 	if err != nil {
 		return "", err
 	}
+	logrus.Debug("External api Gender request recived")
 
 	defer req.Body.Close()
 

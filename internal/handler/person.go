@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type userUpdate struct {
@@ -18,6 +19,7 @@ type inputId struct {
 }
 
 func (h *Handler) AddPerson(c *gin.Context) {
+	logrus.Info("Post(AddPerson) request received")
 	var input models.PersonInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -28,11 +30,13 @@ func (h *Handler) AddPerson(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	logrus.Info("Post(AddPerson) request complete")
 	c.JSON(http.StatusOK, gin.H{
 		"id": id,
 	})
 }
 func (h *Handler) GetPersons(c *gin.Context) {
+	logrus.Info("Get (person) request received")
 	var input models.UserGetList
 	if err := c.BindJSON(&input); err != nil {
 		fmt.Println(input)
@@ -44,11 +48,13 @@ func (h *Handler) GetPersons(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	logrus.Info("Get (person) request complete")
 	c.JSON(http.StatusOK, gin.H{
 		"persons": persons,
 	})
 }
 func (h *Handler) EditPerson(c *gin.Context) {
+	logrus.Info("Patch (person) request received")
 	var input models.PersonBD
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -59,12 +65,14 @@ func (h *Handler) EditPerson(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	logrus.Info("Patch (person) request complete")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Done",
 	})
 }
 func (h *Handler) DeletePerson(c *gin.Context) {
+	logrus.Info("Delete (person) request received")
 	var input inputId
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -75,6 +83,7 @@ func (h *Handler) DeletePerson(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	logrus.Info("Delete (person) request complete")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Done",

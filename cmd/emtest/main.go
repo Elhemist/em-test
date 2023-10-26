@@ -16,6 +16,7 @@ func main() {
 	if err := InitConfig(); err != nil {
 		logrus.Fatalf("Config init error: %s", err.Error())
 	}
+	logrus.Debug("Config init complete")
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -27,6 +28,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("DB init fail: %s", err.Error())
 	}
+	logrus.Info("DB init complete")
 
 	repos := repository.NewRepository(db)
 	service := service.NewService(repos)
@@ -36,6 +38,7 @@ func main() {
 	if err := srv.Start(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("Running error: %s", err.Error())
 	}
+	logrus.Info("Server start")
 }
 
 func InitConfig() error {
