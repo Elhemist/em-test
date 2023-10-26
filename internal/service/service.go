@@ -1,9 +1,12 @@
 package service
 
-import "em-test/internal/repository"
+import (
+	"em-test/internal/repository"
+	"em-test/models"
+)
 
 type Person interface {
-	AddPerson() error
+	AddPerson(models.PersonInput) (int, error)
 }
 type Service struct {
 	Person

@@ -1,11 +1,13 @@
 package repository
 
 import (
+	"em-test/models"
+
 	"github.com/jmoiron/sqlx"
 )
 
 type Person interface {
-	AddPerson() error
+	AddPerson(models.PersonBD) (int, error)
 }
 type Repository struct {
 	Person
