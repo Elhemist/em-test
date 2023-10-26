@@ -50,19 +50,19 @@ func (s *PersonService) EditPerson(person models.PersonBD) error {
 func (s *PersonService) GetPersons(person models.UserGetList) ([]models.PersonBD, error) {
 	var settings = " WHERE "
 	if person.Name != "" {
-		settings += fmt.Sprintf("name = %s ", person.Name)
+		settings += fmt.Sprintf("name = '%s' ", person.Name)
 	}
 	if person.Surname != "" {
 		if settings != where {
 			settings += and
 		}
-		settings += fmt.Sprintf("surname = %s ", person.Surname)
+		settings += fmt.Sprintf("surname = '%s' ", person.Surname)
 	}
 	if person.Patronymic != "" {
 		if settings != where {
 			settings += and
 		}
-		settings += fmt.Sprintf("patronymic = %s ", person.Patronymic)
+		settings += fmt.Sprintf("patronymic = '%s' ", person.Patronymic)
 	}
 	if person.Age != 0 {
 		if settings != where {
@@ -74,17 +74,23 @@ func (s *PersonService) GetPersons(person models.UserGetList) ([]models.PersonBD
 		if settings != where {
 			settings += and
 		}
-		settings += fmt.Sprintf("gender = %s ", person.Gender)
+		settings += fmt.Sprintf("gender = '%s' ", person.Gender)
 	}
 	if person.Nationality != "" {
 		if settings != where {
 			settings += and
 		}
-		settings += fmt.Sprintf("nationality = %s ", person.Nationality)
+		settings += fmt.Sprintf("nationality = '%s' ", person.Nationality)
 	}
 	if settings == where {
 		settings = ""
 	}
-	fmt.Println(settings)
+	if person.PageSize != 0 {
+		pageNumber := person.PageNumber - 1
+		if pageNumber < 0 {
+			pageNumber = 0
+		}
+		settings += fmt.Sprintf("ORDER BY id OFFSET %d FETCH NEXT %d ROWS ONLY", pageNumber*person.PageSize, person.PageSize)
+	}
 	return s.repo.GetPersons(settings)
 }

@@ -33,14 +33,12 @@ func (h *Handler) AddPerson(c *gin.Context) {
 	})
 }
 func (h *Handler) GetPersons(c *gin.Context) {
-	fmt.Println(1)
 	var input models.UserGetList
 	if err := c.BindJSON(&input); err != nil {
 		fmt.Println(input)
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println(2)
 	persons, err := h.services.Person.GetPersons(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
