@@ -42,15 +42,25 @@ func (r *PersonPostgres) DeletePerson(id int) error {
 	}
 	return err
 }
-func (r *PersonPostgres) EditPerson(id int, person models.PersonBD) error {
+func (r *PersonPostgres) EditPerson(person models.PersonBD) error {
 	query := fmt.Sprintf("UPDATE %s SET Name=$1, Surname=$2, Patronymic=$3, Age=$4, Gender=$5, Nationality=$6 WHERE id =$7", personsTable)
-	res, err := r.db.Exec(query, person.Name, person.Surname, person.Patronymic, person.Age, person.Gender, person.Nationality, id)
+	res, err := r.db.Exec(query, person.Name, person.Surname, person.Patronymic, person.Age, person.Gender, person.Nationality, person.Id)
 	if err != nil {
 		return err
 	}
 	rowsAffected, _ := res.RowsAffected()
 	if rowsAffected == 0 {
-		return fmt.Errorf("Row with person id %v update error", id)
+		return fmt.Errorf("Row with person id %v update error", person.Id)
 	}
 	return err
+}
+
+func (r *PersonPostgres) GetPersons(settings string) ([]models.PersonBD, error) {
+	result := make([]models.PersonBD, 5, 5)
+	query := fmt.Sprintf("SELECT * FROM %s %s", personsTable, settings)
+	err := r.db.Select(&result, query)
+	if err != nil {
+		return nil, err
+	}
+	return result, err
 }

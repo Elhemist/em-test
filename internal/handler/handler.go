@@ -20,7 +20,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		user.POST("/", h.AddPerson)
 		user.DELETE("/", h.DeletePerson)
-		user.GET("/", h.CheckPerson)
+		user.GET("/", h.GetPersons)
 		user.PATCH("/", h.EditPerson)
 	}
 

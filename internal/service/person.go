@@ -3,6 +3,12 @@ package service
 import (
 	repository "em-test/internal/repository"
 	"em-test/models"
+	"fmt"
+)
+
+const (
+	where = " WHERE "
+	and   = "and "
 )
 
 type PersonService struct {
@@ -38,6 +44,47 @@ func (s *PersonService) AddPerson(personIn models.PersonInput) (int, error) {
 func (s *PersonService) DeletePerson(id int) error {
 	return s.repo.DeletePerson(id)
 }
-func (s *PersonService) EditPerson(id int, person models.PersonBD) error {
-	return s.repo.EditPerson(id, person)
+func (s *PersonService) EditPerson(person models.PersonBD) error {
+	return s.repo.EditPerson(person)
+}
+func (s *PersonService) GetPersons(person models.UserGetList) ([]models.PersonBD, error) {
+	var settings = " WHERE "
+	if person.Name != "" {
+		settings += fmt.Sprintf("name = %s ", person.Name)
+	}
+	if person.Surname != "" {
+		if settings != where {
+			settings += and
+		}
+		settings += fmt.Sprintf("surname = %s ", person.Surname)
+	}
+	if person.Patronymic != "" {
+		if settings != where {
+			settings += and
+		}
+		settings += fmt.Sprintf("patronymic = %s ", person.Patronymic)
+	}
+	if person.Age != 0 {
+		if settings != where {
+			settings += and
+		}
+		settings += fmt.Sprintf("age = %d ", person.Age)
+	}
+	if person.Gender != "" {
+		if settings != where {
+			settings += and
+		}
+		settings += fmt.Sprintf("gender = %s ", person.Gender)
+	}
+	if person.Nationality != "" {
+		if settings != where {
+			settings += and
+		}
+		settings += fmt.Sprintf("nationality = %s ", person.Nationality)
+	}
+	if settings == where {
+		settings = ""
+	}
+	fmt.Println(settings)
+	return s.repo.GetPersons(settings)
 }

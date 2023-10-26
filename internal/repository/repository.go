@@ -9,7 +9,8 @@ import (
 type Person interface {
 	AddPerson(models.PersonBD) (int, error)
 	DeletePerson(int) error
-	EditPerson(int, models.PersonBD) error
+	EditPerson(models.PersonBD) error
+	GetPersons(string) ([]models.PersonBD, error)
 }
 type Repository struct {
 	Person
