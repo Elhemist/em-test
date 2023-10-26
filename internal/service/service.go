@@ -8,6 +8,7 @@ import (
 type Person interface {
 	AddPerson(models.PersonInput) (int, error)
 	DeletePerson(int) error
+	EditPerson(int, models.PersonBD) error
 }
 type Service struct {
 	Person

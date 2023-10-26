@@ -38,3 +38,6 @@ func (s *PersonService) AddPerson(personIn models.PersonInput) (int, error) {
 func (s *PersonService) DeletePerson(id int) error {
 	return s.repo.DeletePerson(id)
 }
+func (s *PersonService) EditPerson(id int, person models.PersonBD) error {
+	return s.repo.EditPerson(id, person)
+}
