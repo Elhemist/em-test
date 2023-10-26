@@ -34,3 +34,7 @@ func (s *PersonService) AddPerson(personIn models.PersonInput) (int, error) {
 	}
 	return s.repo.AddPerson(person)
 }
+
+func (s *PersonService) DeletePerson(id int) error {
+	return s.repo.DeletePerson(id)
+}

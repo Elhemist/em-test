@@ -30,19 +30,15 @@ func (r *PersonPostgres) AddPerson(person models.PersonBD) (int, error) {
 	return int(id), nil
 }
 
-// func (r *SegmentPostgres) CreateSegment(name string) (int, error) {
-
-// 	var userSeg segment.Segment
-// 	if name != "" {
-// 		query := fmt.Sprintf("INSERT INTO %s (name) VALUES ($1)", segmentTable)
-// 		_, err := r.db.Exec(query, name)
-// 		if err != nil {
-// 			return userSeg.Id, fmt.Errorf("Segment insert error")
-// 		}
-// 		query = fmt.Sprintf("SELECT id, name FROM %s WHERE name=$1 ", segmentTable)
-// 		err = r.db.Get(&userSeg, query, name)
-// 		return userSeg.Id, err
-// 	} else {
-// 		return userSeg.Id, fmt.Errorf("Empty name")
-// 	}
-// }
+func (r *PersonPostgres) DeletePerson(id int) error {
+	query := fmt.Sprintf("DELETE FROM  %s WHERE id =$1", personsTable)
+	res, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	rowsAffected, _ := res.RowsAffected()
+	if rowsAffected == 0 {
+		return fmt.Errorf("Row with person id %v delete error", id)
+	}
+	return err
+}
