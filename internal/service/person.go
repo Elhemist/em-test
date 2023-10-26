@@ -1,7 +1,7 @@
 package service
 
 import (
-	"em-test/internal/repository"
+	repository "em-test/internal/repository"
 )
 
 type PersonService struct {
@@ -13,5 +13,8 @@ func NewPersonService(repo repository.Person) *PersonService {
 }
 
 func (s *PersonService) AddPerson() error {
+	// _, _ := repository.GetAge("Dima")
+	// nya, _ := repository.GetNation("Dima")
+	// nya, _ := repository.GetGender("Dima")
 	return s.repo.AddPerson()
 }

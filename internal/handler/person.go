@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,8 +18,6 @@ func (h *Handler) AddPerson(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println(1)
-	fmt.Println(input.Name, input.Surname, input.Patronymic)
 	err := h.services.Person.AddPerson()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
