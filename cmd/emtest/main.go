@@ -6,6 +6,7 @@ import (
 	"em-test/internal/repository"
 	"em-test/internal/service"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -15,6 +16,10 @@ func main() {
 
 	if err := InitConfig(); err != nil {
 		logrus.Fatalf("Config init error: %s", err.Error())
+	}
+
+	if err := godotenv.Load(); err != nil {
+		logrus.Fatalf("Loading env variables error: %s", err.Error())
 	}
 	logrus.Debug("Config init complete")
 	db, err := repository.NewPostgresDB(repository.Config{
