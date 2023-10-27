@@ -7,13 +7,13 @@
 Для запуска необходимо создать postgres базу данных с именем nameTrace. Далее следует применить миграции. В случаее импользования утилиты migrate можно применить следующую команду.
 
 ```bash
-make migrations-up
+migrate -path ./schema -database "postgres://postgres:qwerty@localhost:5432/nameTrace?sslmode=disable" up
 ```
 
 После сервер пожно запустить с помощью следующей команды:
 
 ```bash
-make up
+go run /cmd/emtest/main.go
 ```
 
 # API

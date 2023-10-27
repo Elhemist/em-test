@@ -5,6 +5,7 @@ import (
 	"em-test/internal/handler"
 	"em-test/internal/repository"
 	"em-test/internal/service"
+	"os"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -26,7 +27,7 @@ func main() {
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Usename:  viper.GetString("db.usename"),
-		Password: viper.GetString("db.password"),
+		Password: os.Getenv("DB_PASSWORD"),
 		DBName:   viper.GetString("db.dbname"),
 		SSLmode:  viper.GetString("db.sslmode"),
 	})
